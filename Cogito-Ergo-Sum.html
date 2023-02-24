@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .mod-width{
+            border: solid 1px;
+            
+        }
+        .width-button{
+            display: flex;
+            justify-content: center;
+            width: 100px;
+            border: solid 1px;
+            border-radius: 10%;
+        }
+            .width-button:hover{
+            cursor: pointer;
+
+        }
+    </style>
+</head>
+<body>
+
+    <ul>
+        <li class="mod-width"></li>
+        <li class="mod-width"></li>
+        <li class="mod-width"></li>
+        <li class="mod-width"></li>
+        <li class="mod-width"></li>
+    </ul>
+
+    <ul>
+        <li class="width-button">100px</li>
+        <li class="width-button">200px</li>
+        <li class="width-button">300px</li>
+
+    </ul>
+
+    <script>
+        초기화();
+        function 초기화() {
+            const modWidth = document.getElementsByClassName('mod-width');
+            const widthButton = document.getElementsByClassName('width-button');
+            var getWidth = [100,200,300];
+            function widthChange(parameter) {
+                for (let i = 0; i < 5; i++) {
+                    modWidth[i].style.width = `${parameter}px`;
+                }
+            }
+            for(let i = 0; i < 3; i++){
+                widthButton[i].addEventListener("click", ()=>{widthChange(getWidth[i])});
+            }
+        }
+    </script>
+</body>
+</html>
