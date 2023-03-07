@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,84 +15,175 @@
             list-style: none;
         }
 
-
-        .slide-container {
-            width: 200px;
-            border: red 1px solid;
-            overflow: hidden;
+        body {
+            padding-top: 32px;
         }
 
-        .slide-contents-wrapper {
-            /* width 100% */
-            display: flex;
-            width: fit-content;
-            transition: 0.5s;
-            /* 
-                transform: translateX(calc(-200px * 2));
-            */
-        }
-
-        .slide-content {
-            width: 200px;
-            height: 100px;
-            border: 1px solid #232323;
-            font-size: 50px;
-            text-align: center;
-            line-height: 100px;
+        #todolist-container{
+            padding: 16px;
+            width: 400px;
+            height: 500px;
+            font-size: 12px;
             box-sizing: border-box;
+            margin: 0 auto;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #222;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        
         }
+
+        #adding-container{
+            display:flex;
+            flex-direction: column;
+        }
+        #adding-wrapper>form{
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        #adding-wrapper input {
+            padding: 8px;
+            width: 100%;
+            border-radius: 4px;
+            border: 1px solid #aaa;
+        }
+
+        .adding-wrapper input::placeholder {
+            color: #aaa;
+        }
+
+        #add-button {
+            border: none;
+            background-color: white;
+            color:#616FEC;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #616fec;
+            padding: 8px 8px;
+        }
+
+        #to-do-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .todo {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+            gap: 24px;
+        }
+        .dateclass {
+            flex-shrink: 0;
+            color: #aaa;
+        }
+        .line-in-bucket {
+            width: 100%;
+        }
+
+        .del-button {
+            flex-shrink: 0;
+            padding: 8px;
+            color: #ff5454;
+            text-decoration: none;
+            border: none;
+            background-color: white;
+        }
+
+        h2{
+            font-size: 16px;
+            margin-bottom: 8px;
+            width:100%;
+        }
+        button:hover{
+            cursor: pointer;
+        }
+
     </style>
-
 </head>
-
-
 <body>
-    <div class="slide-container">
-        <ul class="slide-contents-wrapper">
-            <li class="slide-content">1</li>
-            <li class="slide-content">2</li>
-            <li class="slide-content">3</li>
-            <li class="slide-content">4</li>
-            <li class="slide-content">5</li>
+    <div id="todolist-container">
+        <div id="adding-container">
+            <h2>할 일 추가하기</h2>
+            <div id = "adding-wrapper">
+                <form id ="form">
+                    <input type="text" id = "todo-input" placeholder="할 일을 추가하기">
+                    <button type="submit" id="add-button">추가</button>
+                </form>    
+            </div>
+        </div>
+
+        <div id="bucket">
+            <h2>오늘의 할 일</h2>
+            <ul id = "lists">
         </ul>
+            
+
+        <script>
+            form.addEventListener('submit', function(e){
+                e.preventDefault();
+                creating_list();
+                function creating_list(){
+                    if(document.getElementById('todo-input').value !== ''){
+                        <!-- 참조용변수 -->
+                        let todoInput = document.getElementById('todo-input').value;
+                        
+                        const time = new Date();
+                        const date = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`;
+    
+                        <!-- 객체생성용변수 -->
+                        const phraseObject = document.createElement('p');
+                        const deleteObject = document.createElement('button');
+                        const liObject = document.createElement('li');
+                        const checkboxObject = document.createElement('input');
+                        const pDay = document.createElement('p');
+    
+                        <!-- 객체속성지정 -->
+                        checkboxObject.setAttribute('type','checkbox');                        
+                        checkboxObject.addEventListener('click', () => {
+                            if (checkboxObject.checked === true) { 
+                              phraseObject.style.textDecorationLine = 'line-through'; 
+                              const liObject = checkboxObject.parentNode;
+                              liObject.parentNode.appendChild(liObject);
+                            } else {
+                              phraseObject.style.textDecorationLine = 'none';
+                            }
+                          });
+                        
+                        deleteObject.addEventListener('click', (e)=>{
+                            const liObject = deleteObject.parentNode;
+                            liObject.parentNode.removeChild(liObject);
+                        });
+
+                        liObject.classList.add('todo');
+                        pDay.classList.add('dateclass');
+                        phraseObject.classList.add('line-in-bucket');
+                        phraseObject.appendChild(document.createTextNode(`${todoInput}`));
+                        deleteObject.classList.add('del-button');
+                        deleteObject.appendChild(document.createTextNode(`삭제`));
+                        pDay.innerText = date
+    
+                        <!-- 객체 생성 -->
+                        document.getElementById('lists').appendChild(liObject);
+                        liObject.appendChild(checkboxObject);
+                        liObject.appendChild(phraseObject);
+                        liObject.appendChild(pDay);
+                        liObject.appendChild(deleteObject);
+                        document.getElementById('todo-input').value = '';
+                    }
+                }
+            })
+
+
+        </script>
     </div>
-    <button id="previous">이전</button>
-    <button id="next">다음</button>
-
-    <script>
-        const slideWrapper = document.querySelector('.slide-contents-wrapper');
-        const nextButton = document.getElementById('next');
-        const prevButton = document.getElementById('previous');
-        let index = 0;
-
-        nextButton.addEventListener('click', 다음);
-        prevButton.addEventListener('click', 이전);
-
-        function 다음() {
-            index++;
-            if (index === 5) {
-                index = 0;
-            }
-            적용();
-        }
-
-        function 이전() {
-            index--;
-            if (index === -1) {
-                index = 4;
-            }
-            적용();
-        }
-        function 적용() {
-            slideWrapper.style.transform = `translateX(${index * (-200)}px)`;
-        }
-
-        // index만 바꿔선 아무것도 바뀌지 않는다.
-        // 실질적으로 이동은 transform : translateX 속성이 해주고있기때문에
-        // index가 변경된 이후 속성을 최신화 해줘야 슬라이드에 적용된다.
-
-        // 숙제 : 이전 버튼 만들기
-    </script>
 </body>
-
 </html>
